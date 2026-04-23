@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card auth-card">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join MovieBook today</p>
+        </div>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.phone.id_for_label }}">Phone (Optional)</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.date_of_birth.id_for_label }}">Date of Birth (Optional)</label>
+                {{ form.date_of_birth }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit" class="btn auth-btn">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{% url 'user:login' %}">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-card {
+    max-width: 500px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.auth-header h2 {
+    color: #1c1c1c;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.auth-form {
+    margin-bottom: 2rem;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+}
+
+.auth-footer {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1.5rem;
+}
+
+.auth-footer a {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+</style>
+{% endblock %}

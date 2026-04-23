@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}Movie Booking System{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="{% url 'movie:list' %}">🎬 BookMyScreen</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'movie:list' %}" class="{% if request.resolver_match.url_name == 'list' and request.resolver_match.app_name == 'movie' %}active{% endif %}">Movies</a></li>
+                    <li><a href="{% url 'theatre:list' %}">Theatres</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'booking:history' %}">My Bookings</a></li>
+                        <li><a href="{% url 'payment:history' %}">My Payment</a></li>
+                        <li><a href="{% url 'user:profile' %}">Profile</a></li>
+                        <li><a href="{% url 'user:logout' %}">Logout</a></li>
+                        <li><a href="{% url 'notification:list' %}">🔔 </a></li>
+
+                    {% else %}
+                        <li><a href="{% url 'user:login' %}">Login</a></li>
+                        <li><a href="{% url 'user:register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        {% if messages %}
+            <div class="container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 BookMyScreen. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Privacy</a></li>
+            </ul>
+        </div>
+    </footer>
+    
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <!-- App-specific JavaScript files -->
+    {% if request.resolver_match.app_name == 'user' %}
+        <script src="{% static 'user/js/script.js' %}"></script>
+    {% elif request.resolver_match.app_name == 'movie' %}
+        <script src="{% static 'movie/js/script.js' %}"></script>
+    {% elif request.resolver_match.app_name == 'booking' %}
+        <script src="{% static 'booking/js/script.js' %}"></script>
+    {% elif request.resolver_match.app_name == 'show' %}
+        <script src="{% static 'show/js/script.js' %}"></script>
+    {% elif request.resolver_match.app_name == 'theatre' %}
+        <script src="{% static 'theatre/js/script.js' %}"></script>
+    {% elif request.resolver_match.app_name == 'payment' %}
+        <script src="{% static 'payment/js/script.js' %}"></script>
+    {% endif %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

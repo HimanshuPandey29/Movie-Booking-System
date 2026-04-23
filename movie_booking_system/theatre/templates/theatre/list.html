@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Theatres{% endblock %}
+
+{% block content %}
+<h2>Theatres</h2>
+<div class="theatres-grid">
+    {% for theatre in theatres %}
+    <div class="card">
+        <h3>{{ theatre.name }}</h3>
+        <p>{{ theatre.location }}</p>
+        <a href="{% url 'show:list' %}?theatre={{ theatre.pk }}" class="btn">View Shows</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

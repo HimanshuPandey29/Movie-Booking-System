@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment History{% endblock %}
+
+{% block content %}
+<h2>Payment History</h2>
+<div class="payments">
+    {% for payment in payments %}
+    <div class="card">
+        <h3>Booking for {{ payment.booking.show.movie.title }}</h3>
+        <p>Amount: ₹{{ payment.amount }}</p>
+        <p>Status: {{ payment.status }}</p>
+        <p>Method: {{ payment.payment_method }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

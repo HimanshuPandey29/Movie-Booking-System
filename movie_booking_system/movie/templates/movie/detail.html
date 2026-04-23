@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card movie-detail">
+        <div class="movie-header">
+            <div class="movie-poster-large">
+                {% if movie.poster %}
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+                {% else %}
+                    <div class="no-poster-large">
+                        <span>🎬</span>
+                        <p>{{ movie.title }}</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="movie-details">
+                <h1>{{ movie.title }}</h1>
+                <div class="movie-meta">
+                    <span class="genre">{{ movie.genre }}</span>
+                    <span class="duration">{{ movie.duration }} minutes</span>
+                    <span class="release-date">{{ movie.release_date }}</span>
+                </div>
+                <div class="movie-description">
+                    <h3>Synopsis</h3>
+                    <p>{{ movie.description }}</p>
+                </div>
+                <div class="movie-actions">
+                    <a href="{% url 'show:list' %}?movie={{ movie.pk }}" class="btn">Book Tickets</a>
+                    <a href="{% url 'movie:list' %}" class="btn btn-secondary">Back to Movies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.movie-detail {
+    padding: 0;
+}
+
+.movie-header {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.movie-poster-large {
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.movie-poster-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-poster-large {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff4d4d, #ff6666);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.no-poster-large span {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.movie-details h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1c1c1c;
+}
+
+.movie-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.genre, .duration, .release-date {
+    background: #f8f9fa;
+    color: #666;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.movie-description h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #1c1c1c;
+}
+
+.movie-description p {
+    line-height: 1.6;
+    color: #666;
+}
+
+.movie-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .movie-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .movie-poster-large {
+        height: 300px;
+        margin: 0 auto 2rem;
+        max-width: 250px;
+    }
+
+    .movie-details h1 {
+        font-size: 2rem;
+    }
+
+    .movie-meta {
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}

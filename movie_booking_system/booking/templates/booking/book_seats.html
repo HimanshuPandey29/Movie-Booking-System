@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Book Seats{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'booking/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <h2>Book Seats for {{ show.movie.title }}</h2>
+        <div class="show-details">
+            <p><strong>Theatre:</strong> {{ show.theatre.name }}</p>
+            <p><strong>Screen:</strong> {{ show.screen.screen_number }}</p>
+            <p><strong>Time:</strong> {{ show.show_time }}</p>
+            <p><strong>Price per seat:</strong> ₹{{ show.price }}</p>
+        </div>
+    </div>
+
+    <div class="seat-selection">
+        <h3>Select Your Seats</h3>
+
+        <div class="screen-indicator">SCREEN</div>
+
+        <div class="seats-container">
+            <div class="seat-grid">
+                <!-- Seats will be rendered by JavaScript -->
+            </div>
+
+            <div class="seat-legend">
+                <div class="legend-item">
+                    <div class="legend-color available"></div>
+                    <span>Available</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color selected"></div>
+                    <span>Selected</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color booked"></div>
+                    <span>Booked</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-summary">
+            <h4>Booking Summary</h4>
+            <div class="summary-details">
+                <div class="summary-item">
+                    <span>Selected Seats:</span>
+                    <span id="selected-seats-list">None</span>
+                </div>
+                <div class="summary-item">
+                    <span>Number of Seats:</span>
+                    <span id="selected-count">0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total Price:</span>
+                    <span id="total-price">₹0</span>
+                </div>
+            </div>
+            <button type="button" class="btn btn-book" data-price="{{ show.price }}" >Select Seats to Book</button>
+        </div>
+    </div>
+</div>
+
+<div id="show-info" data-show-id="{{ show.id }}" style="display:none"></div>
+
+<!-- Booking Confirmation Modal -->
+<div id="booking-confirmation-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Booking</h3>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to book the following seats?</p>
+            <div class="booking-details">
+                <p><strong>Seats:</strong> <span id="confirm-seats"></span></p>
+                <p><strong>Total Amount:</strong> <span id="confirm-total"></span></p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-cancel">Cancel</button>
+            <button type="button" class="btn btn-confirm" onclick="confirmBooking()">Confirm Booking</button>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Success Modal -->
+<div id="payment-success-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Booking Successful!</h3>
+        </div>
+        <div class="modal-body text-center">
+            <div class="success-icon">✅</div>
+            <h4>Payment Completed</h4>
+            <p>Your seats have been booked successfully!</p>
+            <p>You will receive a confirmation email shortly.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'booking:history' %}" class="btn">View My Bookings</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking History{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <h2>My Booking History</h2>
+        {% if bookings %}
+            <table class="booking-table">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Theatre</th>
+                        <th>Show Time</th>
+                        <th>Seats</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.show.movie.title }}</td>
+                        <td>{{ booking.show.theatre.name }}</td>
+                        <td>{{ booking.show.show_time }}</td>
+                        <td>{{ booking.seats|join:", " }}</td>
+                        <td>₹{{ booking.total_price }}</td>
+                        <td>
+                            <span class="status status-{{ booking.status }}">
+                                {{ booking.status|title }}
+                            </span>
+                        </td>
+                      
+                        <td>
+                            {% if booking.status == 'pending' %}
+                                <a href="{% url 'booking:cancel' booking.pk %}" class="btn btn-secondary">Cancel</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You haven't made any bookings yet.</p>
+            <a href="{% url 'movie:list' %}" class="btn">Browse Movies</a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-confirmed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+</style>
+{% endblock %}
